@@ -27,24 +27,23 @@ public:
     // Destroy the (sub)tree recursively
     ~TicTacToe();
 
-    // It is MAX's or MIN's turn.
-    // For empty board, turn is MAX.
 
-    // The latest move (0 ~ 8) that led to the current state
-    // (meaningless for root node)
 
-    // Depth of the node in the tree (0 ~ 9)
+	//parameters initialisation
+	static const smallint MAX = 1, MIN = -1, ZERO = 0, INF = 64, N_POS = 9;
+	// It is MAX's or MIN's turn.     // For empty board, turn is MAX.
+	const smallint turn;
 
-    // Current MAX's payoff
-    // (1) X wins
-    //     MAX * (10 - depth)
-    // (2) O wins
-    //     MIN * (10 - depth)
-    // (3) Draw
-    //     ZERO
+	// The latest move (0 ~ 8) that led to the current state (meaningless for root node)
+	const smallint move;
 
-    // The stone at each board position is MAX, MIN, or ZERO.
-    smallint s[N_POS];
+	// Depth of the node in the tree (0 ~ 9)
+	const smallint depth;
+
+	smallint alpha, beta;
+
+	// The stone at each board position is MAX, MIN, or ZERO.
+	smallint s[N_POS];
 
     // The previous TicTacToe state (parent node)
     // For the empty board (root node), parent is nullptr
@@ -63,10 +62,24 @@ public:
     // This is called during construction if necessary.
     void search();
 
+	smallint get_v() {
+		return v;
+	}
+
 private:
     // Construct a non-root node and its descendants,
     // given its parent node and the move (0 ~ 8) from the parent state to the current state
     TicTacToe(const TicTacToe *parent, smallint move, smallint alpha, smallint beta);
+
+	// Current MAX's payoff
+	// (1) X wins     //     MAX * (10 - depth)
+	// (2) O wins     //     MIN * (10 - depth)
+	// (3) Draw      //     ZERO
+	smallint v;
+
+	
+
+
 };
 
 // Print the current TicTacToe board to ostream
