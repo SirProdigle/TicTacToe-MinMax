@@ -59,6 +59,7 @@ bool TicTacToe::is_win() const {
 
 TicTacToe::TicTacToe():
         turn(MAX), move(-1), depth(0), alpha(-INF), beta(+INF), s(), parent(nullptr) {
+	memset(&s, 0, sizeof(s));
     ++node_counter;
     search();
 }

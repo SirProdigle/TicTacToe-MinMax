@@ -38,6 +38,7 @@ bool play(TicTacToe *it) {
     cout << "\nChoose an option:\n"
         << "(X) Play as MAX\n"
         << "(O) Play as MIN\n"
+		<< "(A) CPU vs CPU\n"
         << "(Q) Quit" << endl;
     TicTacToe::smallint human = 0;
     while (!human) {
@@ -52,6 +53,8 @@ bool play(TicTacToe *it) {
         case 'O': case 'o':
             human = TicTacToe::MIN;
             break;
+		case 'A' : case 'a':
+			human = TicTacToe::RANDOM;
         }
     }
     for (;;) { // Each move
@@ -71,6 +74,13 @@ bool play(TicTacToe *it) {
                 }
             }
 			it->s[move] = human; //TODO ??? added this heres
+		}
+		else if (it->turn == TicTacToe::MAX && human == TicTacToe::RANDOM) { //If we are random assume we take the place of MAX
+			move = rand() % TicTacToe::N_POS;
+			while (!(0 <= move && move < TicTacToe::N_POS && it->s[move] == TicTacToe::ZERO)) { //While not a valid choice
+				move = rand() % TicTacToe::N_POS; //recalculate
+			}
+			it->s[move] = TicTacToe::MAX; //assume role of MAX
 		}
 		else {
 			// Computer move

@@ -30,7 +30,7 @@ public:
 
 
 	//parameters initialisation
-	static const smallint MAX = 1, MIN = -1, ZERO = 0, INF = 64, N_POS = 9;
+	static const smallint MAX = 1, MIN = -1, ZERO = 0, RANDOM = 10, INF = 64, N_POS = 9;
 	// It is MAX's or MIN's turn.     // For empty board, turn is MAX.
 	const smallint turn;
 
