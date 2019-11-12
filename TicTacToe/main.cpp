@@ -14,7 +14,7 @@ bool play(TicTacToe *it);
 
 int main() {
     cout << "Solving Tic-tac-toe using minimax search " << endl;
-
+	srand(time(0));
     auto t0 = std::chrono::high_resolution_clock::now();
         // Root node
         TicTacToe root;
@@ -30,7 +30,9 @@ int main() {
          << "Leaves\t" << root.leaf_counter << '\n'
          << "Nodes\t" << root.node_counter << endl;
     cout << "\nPayoff at root node: " << static_cast<int>(root.get_v()) << endl;
-    while (play(&root)) { }
+    while (play(&root)) {
+		memset(&root.s, 0, sizeof(root.s));
+	}
     return EXIT_SUCCESS;
 }
 
@@ -41,6 +43,7 @@ bool play(TicTacToe *it) {
 		<< "(A) CPU vs CPU\n"
         << "(Q) Quit" << endl;
     TicTacToe::smallint human = 0;
+	bool randomAI = false;
     while (!human) {
         char option;
         cin >> option;
@@ -54,13 +57,14 @@ bool play(TicTacToe *it) {
             human = TicTacToe::MIN;
             break;
 		case 'A' : case 'a':
-			human = TicTacToe::RANDOM;
+			human = TicTacToe::MAX; //Assume random plays as MAX
+			randomAI = true;
         }
     }
     for (;;) { // Each move
         cout << '\n' << *it << flush;
         int move;
-        if (it->turn == human) {
+        if (it->turn == human && !randomAI) {
             // Human move
             cout << "Your move: " << flush;
             for (;;) {
@@ -75,7 +79,7 @@ bool play(TicTacToe *it) {
             }
 			it->s[move] = human; //TODO ??? added this heres
 		}
-		else if (it->turn == TicTacToe::MAX && human == TicTacToe::RANDOM) { //If we are random assume we take the place of MAX
+		else if (it->turn == human && randomAI) { //If we are random assume we take the place of MAX
 			move = rand() % TicTacToe::N_POS;
 			while (!(0 <= move && move < TicTacToe::N_POS && it->s[move] == TicTacToe::ZERO)) { //While not a valid choice
 				move = rand() % TicTacToe::N_POS; //recalculate
@@ -116,7 +120,7 @@ bool play(TicTacToe *it) {
         if (it->depth == TicTacToe::N_POS || it->is_win()) {
             // Game just ended.
             cout << '\n' << *it << flush;
-            TicTacToe::smallint human_payoff = human * it->get_v();
+			TicTacToe::smallint human_payoff = human * it->get_v();
             if (human_payoff > 0)
                 cout << "You win!" << endl;
             else if (human_payoff < 0)

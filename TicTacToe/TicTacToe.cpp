@@ -98,12 +98,15 @@ TicTacToe::TicTacToe(const TicTacToe *parent, smallint move, smallint alpha, sma
 void TicTacToe::search() {
 	if (turn == MAX) {
 		smallint max = -INF;
-		for (smallint p = 0; p < N_POS; ++p) {
+		for (smallint p = 0; p < N_POS; ++p) { //For static allocation, set a max depth so don't go to the bottom, need some way to figure out based on state how much that state is worth. E.G a point for however many "2 streak" e.g xx_ for the score to return.
 			if (s[p] == ZERO) {
 				// Go down the tree
 				children[p] = new TicTacToe(this, p, alpha, beta);
 				if (children[p]->get_v() > max) {
 					max = children[p]->get_v();
+					if (max > alpha && (alpha = max) >= beta)
+						break;
+
 				}
 			}
 		}
@@ -117,6 +120,11 @@ void TicTacToe::search() {
 				children[p] = new TicTacToe(this, p, alpha, beta);
 				if (children[p]->v < min) {
 					min = children[p]->v;
+					if (min < beta)
+						beta = min;
+					if (alpha > beta)
+						break;
+
 				}
 			}
 		}
