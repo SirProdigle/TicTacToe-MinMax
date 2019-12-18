@@ -47,7 +47,7 @@ public:
 
     // The previous TicTacToe state (parent node)
     // For the empty board (root node), parent is nullptr
-    const TicTacToe *parent;
+ 
 
     // Array containing pointers to the child nodes, indexed by the move (0 ~ 8).
     // nullptr indicates a nonexistent (invalid) child node.
@@ -61,7 +61,9 @@ public:
     // Perform minimax search while constructing child nodes
     // This is called during construction if necessary.
     void search();
-
+	const TicTacToe* get_parent() const {
+		return parent;
+	}
 	smallint get_v() {
 		return v;
 	}
@@ -76,6 +78,7 @@ private:
 	// (2) O wins     //     MIN * (10 - depth)
 	// (3) Draw      //     ZERO
 	smallint v;
+	const TicTacToe *parent;
 
 	
 

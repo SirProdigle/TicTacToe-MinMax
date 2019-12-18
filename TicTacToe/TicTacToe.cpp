@@ -17,6 +17,7 @@ TicTacToe *TicTacToe::get_child(smallint move) {
 
 
 bool TicTacToe::is_win() const {
+	const TicTacToe* parent = get_parent();
     const smallint pt = parent->turn;
     switch (move) {
     case 0:
